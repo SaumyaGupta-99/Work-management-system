@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<?php
+session_start();
+if($_SESSION['status']!="active"){
+  header("location:index.html");
+}
+?>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Employee</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/style2.css">
+  </head>
+<body>
+  <header>
+ <a class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="Sign out" onclick="signout()">
+    <img src="images/user.png" class="w3-circle" style="height:23px;width:23px" alt="User">
+  </a>
+</header>
+<h3><b>Welcome <?php echo $_SESSION['name'] ?></b></h3>
+<h4><b>Emp Id: <?php echo $_SESSION['empid'] ?></b></h4>
+<form action="update.php" method="post">
+<p><b>Enter the work you have done:</p><b><input type="textarea"class="work">
+<br>
+<br>
+<button type='submit' class='btn'>Submit</button>
+</form>
+</br>
+</br>
+<p> <b>Your Work Grid<b></p>
+<script type="text/javascript">
+//using dynamic javascript to create 6*10 table
+function tableCreate() {
+  var body = document.getElementsByTagName('body')[0];
+  var tbl = document.createElement('table');
+  tbl.style.width = '90%';
+tbl.style.height="40%";
+  tbl.setAttribute('border', '1');
+  var tbdy = document.createElement('tbody');
+  for (var i = 0; i < 6; i++) {
+    var tr = document.createElement('tr');
+    for (var j = 0; j < 10; j++) {
+      if (i == 6 && j == 10) {
+        break
+      } else {
+        var td = document.createElement('td');
+        td.appendChild(document.createTextNode('work'))
+        tr.appendChild(td)
+      }
+    }
+    tbdy.appendChild(tr);
+  }
+  //colouring the cells in the table according to the work count
+function colourcell(){
+  tbl.appendChild(tbdy);
+  body.appendChild(tbl);
+  var x = tbl.getElementsByTagName("td");
+  var count=<?php echo $_SESSION["wc"] ?>;
+   for (var i = 0;i<count;i++) {
+  x[i].style.backgroundColor = "black"; 
+}
+}
+window.setInterval(colourcell,2);
+}
+tableCreate();
+</script>
+</body>
+<script type="text/javascript">
+  //function to successfully signout the user
+    function signout(){
+     <?php 
+      unset($_SESSION['status']);
+      ?>
+      alert('Successfully Signed Out');
+      location.href='index.html';
+    }
+  </script> 
+</html>
+

@@ -1,0 +1,24 @@
+body{
+   background: url(work.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+color:black;
+ font-family:Georgia, Arial, sans-serif;
+ margin-left: 20px;
+}
+
+button{
+  background-color:black;
+  border: 3px black;
+  padding:8px;
+  color: white;
+  border-radius: 5px;
+  font-family:Georgia, Arial, sans-serif;
+  font-weight: bold;
+  margin-bottom: 50px;
+}
+table tr td{
+	border: 1px solid black;
+}

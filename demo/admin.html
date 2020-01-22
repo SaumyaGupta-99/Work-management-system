@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<?php
+session_start();
+if($_SESSION['status']!="active"){
+  header("location:index.html");
+}
+?>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style2.css">
+  
+ </head>
+<body>
+  <header>
+ <a class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="Sign out" onclick="signout()">
+    <img src="images/user.png" class="w3-circle" style="height:23px;width:23px" alt="User">
+  </a>
+</header>
+<h3>Welcome <?php echo $_SESSION['name'] ?></h3>
+</br>
+</br>
+<div id="employee">
+  </div>
+</body>
+<script type="text/javascript">
+$(window).ready(function(){
+  //sending ajax request to  request for data about the employees
+var xmlhttp=new XMLHttpRequest();
+xmlhttp.onreadystatechange=function(){
+if(xmlhttp.readyState==4 && xmlhttp.status==200){
+var obj=JSON.parse(xmlhttp.responseText);
+//calculating the size of the array returned
+Object.size = function(obj) {
+    var size = 0, key;
+    for (key in obj) {
+        if (obj.hasOwnProperty(key)) size++;
+    }
+    return size;
+};
+//dynamically creating wor grid for all employees
+var size = Object.size(obj);
+for(var i=0;i<size;i++){
+var att=document.createElement("p");
+    var node=document.createTextNode(obj[i]['name']);
+    att.appendChild(node);
+    var element =document.getElementById("employee");
+    element.appendChild(att);
+    var size = Object.size(obj);
+tableCreate(obj[i]['wc']);
+}
+}
+}
+xmlhttp.open('GET','connect.php',true);
+xmlhttp.send();
+});
+</script>
+<script type="text/javascript">
+  //function to create 6*10 work grid for the employee
+  function tableCreate(count) {
+  var body = document.getElementById("employee");
+  var tbl = document.createElement('table');
+  tbl.style.width = '90%';
+tbl.style.height="40%";
+  tbl.setAttribute('border', '1');
+  var tbdy = document.createElement('tbody');
+  for (var i = 0; i < 6; i++) {
+    var tr = document.createElement('tr');
+    for (var j = 0; j < 10; j++) {
+      if (i == 6 && j == 10) {
+        break
+      } 
+      else {
+        var td = document.createElement('td');
+        td.appendChild(document.createTextNode('work'))
+        tr.appendChild(td)
+      }
+    }
+    tbdy.appendChild(tr);
+  }
+function colourcell(){
+  tbl.appendChild(tbdy);
+  body.appendChild(tbl);
+  var x = tbl.getElementsByTagName("td");
+  for (var i = 0;i<count;i++) {
+  x[i].style.backgroundColor = "black"; 
+}
+}
+colourcell();
+}
+</script>
+<script type="text/javascript">
+  //function to successfully signout the admin
+    function signout(){
+     <?php 
+      unset($_SESSION['status']);
+      ?>
+      alert('Successfully Signed Out');
+      location.href='index.html';
+    }
+  </script> 
+</html>
+
